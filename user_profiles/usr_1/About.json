@@ -1,0 +1,12 @@
+[
+	{
+		"name": "Joe",
+		"age": "?",
+		"nicknames": ["K", "Officer K", "Skin jockey", "Joe"]
+	},
+	{
+		"name": "Decker",
+		"age": "old",
+		"nicknames": ["Nomad", "Decker"]
+	}
+]
