@@ -31,7 +31,6 @@ def judge_howRU(how_r_u):
     return how_r_u
 
 def Diary_entry(user):
-    Diary_directory = user.directory+"/Diaries"
     entry = ""
     print(
         'Please tell me about your day, Write as much as you would like. Press ENTER when you want to end a paragraph. PRESS ENTER again to finish entry')
