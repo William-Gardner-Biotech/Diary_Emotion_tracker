@@ -1,5 +1,8 @@
 import os
-import json
+import jsonpickle as json
+
+if __name__ == "__main__":
+    print("Running in User_background.py")
 
 def build_user():
     Joe = User(who_r_u())
@@ -13,7 +16,7 @@ def build_user():
         return existing_user(user_file)
     #Continues to build the user
     os.mkdir(user_file)
-    diary_path = user_file+"/Diary_entries"
+    diary_path = user_file+"/Diaries"
     os.mkdir(diary_path)
     print("Nice to meet you", Joe.name)
     Joe.age = Age()
@@ -47,27 +50,19 @@ def Age():
 
 def existing_user(user_file_path):
     user_file_path = f"{user_file_path}/About.json"
-    '''Decker = open(user_file_path, "r")
-    Decker = Decker.read()
-    Decker_split = Decker.split("\n")
-    name = Decker_split[0].split("=")
-    name = name[1]
-    Decker = User(name)
-    Old = Decker_split[1].split("=")
-    Decker.age = Old[1]
+    with open(user_file_path, 'r') as existing:
+        rebuild = existing.read()
+    # Decode takes the json format and transforms it back into an object with all the existing attributes
+    Decker = json.decode(rebuild)
     print("Welcome back", Decker.name)
-    return Decker'''
+    return Decker
 
 # We must ensure at least one backup when changing user files
 def export_user(user):
     out_file_path = f"{user.directory}/About.json"
     out_file = open(out_file_path, 'w')
-    serialized_user = {
-            'name': user.name,
-            'age': user.age,
-            'directory': user.directory
-    }
-    json.dump(serialized_user, out_file)
+    final = json.encode(user)
+    out_file.write(final)
     pass
 
 def checkin(user_directory):

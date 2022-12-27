@@ -17,5 +17,5 @@ Day_score = Joi_funxtions.how_are_you()
 
 Diary = Joi_funxtions.Diary_entry(Joe)
 
-print(Diary)
+Joi_funxtions.export_diary(Joe, Diary)
 

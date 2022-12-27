@@ -1,5 +1,6 @@
 import os
 import random
+import datetime
 
 def how_are_you():
     prompt = "How are you? [Rate your day on a scale of 1 to 10]"
@@ -61,3 +62,17 @@ def Diary_continue():
     else:
         print("Input not recognized")
         return Diary_continue()
+
+def export_diary(user, entry):
+    day = datetime.date.today()
+    day = day.strftime("%d%b%Y")
+    export_path = user.directory+"/Diaries/"+day+".txt"
+    # make this a forkable position to add an overwrite option (make overwrite a function)
+    if os.path.exists(export_path):
+        return ("Diary Entry already submitted for this date")
+    with open(export_path, 'w') as submit:
+        submit.write(entry)
+
+
+if __name__ == '__main__':
+    print("Running in function library")
