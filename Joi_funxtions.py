@@ -1,6 +1,8 @@
-import os
 import random
+import os
 import datetime
+import jsonpickle
+
 
 def how_are_you():
     prompt = "How are you? [Rate your day on a scale of 1 to 10]"
@@ -56,7 +58,7 @@ def Diary_continue():
     if decision == "Y":
         return True
     elif decision == "N":
-        print("Please Continue")
+        print("Please Continue\n")
         return False
     else:
         print("Input not recognized")
@@ -78,56 +80,69 @@ def export_diary(user, entry):
 if __name__ == '__main__':
     print("Running in function library")
 
-# F A S H = {[F],[A],[S],[H]}
+# F A S H = {[Fear],[Anger],[Sad],[Happy]}
+
+# baseline returns a pickled json object in the above format
 def baseline(emotions=None):
 
     def Fear_fxn(emotions = None):
         Fear = input("Rate your level of Fear on a scale of 0-10: ")
         check1 = between1_10(Fear)
-        if check1 != True: return baseline()
+        if check1 != True:
+            print("Answer must be within scale [No spaces or letters]\n")
+            return baseline()
         else:
             emotions = basic_emotion(Fear)
-            Anger_fxn(emotions)
+            return mixer(emotions)
 
     def Anger_fxn(emotions = None):
         Anger = input("Rate your level of Anger on a scale of 0-10: ")
         check2 = between1_10(Anger)
-        if check2 != True: return baseline(emotions)
+        if check2 != True:
+            print("Answer must be within scale [No spaces or letters]\n")
+            return mixer(emotions)
         else:
             emotions.Anger = Anger
-            Sad_fxn(emotions)
+            return mixer(emotions)
 
     def Sad_fxn(emotions = None):
         Sad = input("Rate your level of Sadness on a scale of 0-10: ")
         check3 = between1_10(Sad)
-        if check3 != True: return baseline(emotions)
+        if check3 != True:
+            print("Answer must be within scale [No spaces or letters]\n")
+            return mixer(emotions)
         else:
             emotions.Sad = Sad
-            Happy_fxn(emotions)
+            return mixer(emotions)
 
     def Happy_fxn(emotions = None):
         Happy = input("Rate your level of Happiness on a scale of 0-10: ")
         check4 = between1_10(Happy)
-        if check4 != True: return baseline(emotions)
+        if check4 != True:
+            print("Answer must be within scale [No spaces or letters]\n")
+            return mixer(emotions)
         else:
             emotions.Happy = Happy
-            return baseline(emotions)
+            return mixer(emotions)
 
-    if emotions is None:
-        Fear_fxn(emotions)
-    elif len(emotions.__dict__) == 1:
-        Anger_fxn(emotions)
-    elif len(emotions.__dict__) == 2:
-        Sad_fxn(emotions)
-    elif len(emotions.__dict__) == 3:
-        Happy_fxn(emotions)
+# It is returning out but continues instead of returning
 
+    def mixer(emotions=None):
+        if emotions is None:
+            return Fear_fxn(emotions)
+        elif len(emotions.__dict__) == 1:
+            return Anger_fxn(emotions)
+        elif len(emotions.__dict__) == 2:
+            return Sad_fxn(emotions)
+        elif len(emotions.__dict__) == 3:
+            return Happy_fxn(emotions)
+        elif len(emotions.__dict__) == 4:
+            print("Baseline Complete")
+            return emotions
 
-    if len(emotions.__dict__) == 4:
-        print("Complete")
-        #print(emotions.__dict__)
-        return emotions
-
+    raw_baseline = mixer()
+    baseline_obj = jsonpickle.encode(raw_baseline)
+    return baseline_obj
 
 def between1_10(response):
     if response.isdigit() != True:
@@ -141,6 +156,25 @@ class basic_emotion:
     def __init__(self, Fear):
         self.Fear = Fear
 
-base = baseline()
+### Export Section ###
 
-print(base)
+def export_diary(user, entry):
+    day = datetime.date.today()
+    day = day.strftime("%d%b%Y")
+    export_path = user.directory+"/Diaries/"+day+".txt"
+    # make this a forkable position to add an overwrite option (make overwrite a function)
+    if os.path.exists(export_path):
+        return ("Diary Entry already submitted for this date")
+    with open(export_path, 'w') as submit:
+        submit.write(entry)
+    return print("Entry recorded")
+
+# null function example
+def export_baseline(user, base):
+    day = datetime.date.today()
+    day = day.strftime("%d%b%Y")
+    export_path = user.directory+"/Baselines/BL_"+day+".json"
+    if os.path.exists(export_path):
+        return ("Baseline already exists for this date")
+    with open(export_path, 'w') as submit:
+        submit.write(base)

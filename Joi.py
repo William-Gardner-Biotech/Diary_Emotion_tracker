@@ -1,5 +1,6 @@
 import Joi_funxtions
 import User_background
+import jsonpickle
 
 # We must collect data first
 
@@ -13,9 +14,12 @@ import User_background
 
 Joe = User_background.build_user()
 
-Day_score = Joi_funxtions.how_are_you()
+#Day_score = Joi_funxtions.how_are_you()
 
 Diary = Joi_funxtions.Diary_entry(Joe)
 
 Joi_funxtions.export_diary(Joe, Diary)
 
+base = Joi_funxtions.baseline()
+
+Joi_funxtions.export_baseline(Joe, base)
