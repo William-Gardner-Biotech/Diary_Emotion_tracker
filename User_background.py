@@ -14,10 +14,7 @@ def build_user():
     #True means new user, False means existing
     if checkpoint_1 == False:
         return existing_user(user_file)
-    #Continues to build the user
-    os.mkdir(user_file)
-    diary_path = user_file+"/Diaries"
-    os.mkdir(diary_path)
+    #Continues to build the user / Sends the populate to export function now
     print("Nice to meet you", Joe.name)
     Joe.age = Age()
     print("Thank you")
@@ -59,6 +56,12 @@ def existing_user(user_file_path):
 
 # We must ensure at least one backup when changing user files
 def export_user(user):
+    #Populate step
+    os.mkdir(user.directory)
+    diary_path = f"{user.directory}/Diaries"
+    os.mkdir(diary_path)
+    base_line_path = f"{user.directory}/Baselines"
+    os.mkdir(base_line_path)
     out_file_path = f"{user.directory}/About.json"
     out_file = open(out_file_path, 'w')
     final = json.encode(user)
