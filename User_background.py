@@ -15,7 +15,7 @@ def build_user():
     if checkpoint_1 == False:
         return existing_user(user_file)
     #Continues to build the user / Sends the populate to export function now
-    print("Nice to meet you", Joe.name)
+    print("Nice to meet you", Joe.name, "\n")
     Joe.age = Age()
     print("Thank you")
     export_user(Joe)
@@ -51,7 +51,7 @@ def existing_user(user_file_path):
         rebuild = existing.read()
     # Decode takes the json format and transforms it back into an object with all the existing attributes
     Decker = json.decode(rebuild)
-    print("Welcome back", Decker.name)
+    print("Welcome back", Decker.name, "\n")
     return Decker
 
 # We must ensure at least one backup when changing user files
