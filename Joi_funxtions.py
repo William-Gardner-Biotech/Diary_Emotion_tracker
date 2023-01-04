@@ -35,7 +35,7 @@ def judge_howRU(how_r_u):
 def Diary_entry(user):
     entry = ""
     print(
-        'Please tell me about your day, Write as much as you would like. Press ENTER when you want to end a paragraph. PRESS ENTER again to finish entry')
+        'Please tell me about your day, Write as much as you would like. Press ENTER when you want to end a paragraph. PRESS ENTER again to finish entry\n')
     while True:
         line = input()
         if line:

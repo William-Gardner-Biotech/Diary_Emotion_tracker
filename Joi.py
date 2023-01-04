@@ -1,4 +1,5 @@
 import Joi_funxtions
+import Joi_statistics
 import User_background
 import jsonpickle
 
@@ -23,3 +24,5 @@ Joi_funxtions.export_diary(Joe, Diary)
 base = Joi_funxtions.baseline()
 
 Joi_funxtions.export_baseline(Joe, base)
+
+Joi_statistics.visualize_graph(Joe)
