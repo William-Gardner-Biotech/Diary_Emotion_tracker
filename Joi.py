@@ -15,8 +15,6 @@ import jsonpickle
 
 Joe = User_background.build_user()
 
-#Day_score = Joi_funxtions.how_are_you()
-
 Diary = Joi_funxtions.Diary_entry(Joe)
 
 Joi_funxtions.export_diary(Joe, Diary)
