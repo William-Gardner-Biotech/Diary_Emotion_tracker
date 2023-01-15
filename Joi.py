@@ -52,6 +52,4 @@ else:
 	Joi_funxtions.export_diary(Joe, Diary)
 	Joi_funxtions.export_diary(Joe, Diary)
 
-Joi_funxtions.export_baseline(Joe, base)
-
 Joi_statistics.visualize_graph(Joe)
