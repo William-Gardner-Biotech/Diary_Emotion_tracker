@@ -64,19 +64,6 @@ def Diary_continue():
         print("Input not recognized")
         return Diary_continue()
 
-def export_diary(user, entry):
-    day = datetime.date.today()
-    day = day.strftime("%d%b%Y")
-    export_path = user.directory+"/Diaries/"+day+".txt"
-    # make this a forkable position to add an overwrite option (make overwrite a function)
-    if os.path.exists(export_path):
-        return ("Diary Entry already submitted for this date")
-    with open(export_path, 'w') as submit:
-        submit.write(entry)
-    return print("Entry recorded")
-
-
-
 if __name__ == '__main__':
     print("Running in function library")
 
@@ -158,9 +145,12 @@ class basic_emotion:
 
 ### Export Section ###
 
-def export_diary(user, entry):
-    day = datetime.date.today()
-    day = day.strftime("%d%b%Y")
+def export_diary(user, entry, today = ''):
+    if today:
+        day = today
+    else:
+        day = datetime.date.today()
+        day = day.strftime("%d%b%Y")
     export_path = user.directory+"/Diaries/"+day+".txt"
     # make this a forkable position to add an overwrite option (make overwrite a function)
     if os.path.exists(export_path):
@@ -170,7 +160,7 @@ def export_diary(user, entry):
     return print("Entry recorded")
 
 # null function example
-def export_baseline(user, base):
+def export_baseline(user, base, today = ''):
     day = datetime.date.today()
     day = day.strftime("%d%b%Y")
     export_path = user.directory+"/Baselines/BL_"+day+".json"
