@@ -161,8 +161,11 @@ def export_diary(user, entry, today = ''):
 
 # null function example
 def export_baseline(user, base, today = ''):
-    day = datetime.date.today()
-    day = day.strftime("%d%b%Y")
+    if today:
+        day = today
+    else:
+        day = datetime.date.today()
+        day = day.strftime("%d%b%Y")
     export_path = user.directory+"/Baselines/BL_"+day+".json"
     if os.path.exists(export_path):
         return ("Baseline already exists for this date")

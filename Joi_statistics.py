@@ -30,7 +30,7 @@ def visualize_graph(user):
         Happy_y_axis.append(float(emotions.Happy))
 
     if len(open_order) < 5:
-        return print("Not Enough Entries to generate a meaningful plot.")
+        return print("Plot could not be generated. \nI need more entries to generate a meaningful plot.")
 
     plt.plot(open_order, Fear_y_axis, label="FEAR")
     plt.plot(open_order, Anger_y_axis, label="ANGER")
