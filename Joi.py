@@ -18,11 +18,18 @@ parser.add_argument('--date', required=False, type=str, default=None,
 parser.add_argument('--reflect', required=False, type=str, default=None,
 	metavar='<str>', help='Allows user to add an emotional reflection after their baseline to explain what contributed to scores')
 
+parser.add_argument('--interval', required=False, type=int, default=False,
+	metavar='<int>', help='Enter desired number of days for reflection')
+
 arg = parser.parse_args()
 
 ### Load in the background of the user by checking in or creating new profile
 
 Joe = User_background.build_user()
+
+# If new user initiated then it will generate but won't add their interval
+if arg.interval:
+	User_background.change_interval(Joe, arg.interval)
 
 # Checks if optional date was given then uses it as date or defaults to today
 # CAUTION Nothing prevents date to be formatted correctly only checks for collision. This will break our plot if user enters incorrectly
@@ -50,6 +57,6 @@ if arg.date:
 	Joi_funxtions.export_baseline(Joe, base, arg.date)
 else:
 	Joi_funxtions.export_diary(Joe, Diary)
-	Joi_funxtions.export_diary(Joe, Diary)
+	Joi_funxtions.export_baseline(Joe, base)
 
 Joi_statistics.visualize_graph(Joe)

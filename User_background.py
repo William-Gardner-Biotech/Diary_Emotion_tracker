@@ -80,3 +80,21 @@ class User:
         self.name = name
 
     directory = ""
+
+
+# This will change the interval in a user's About.json to allow for relection capabilities and the chance of it occuring
+# Writted here because of jsonpickle and user handling
+def change_interval(user, interval):
+    # Stolen from resurrect function
+    with open(user.directory+"/About.json", 'r') as raw:
+        raw = raw.read()
+        zombie = json.decode(raw)
+
+    zombie.interval = interval
+    print(zombie)
+
+    out_file_path = f"{user.directory}/About.json"
+    out_file = open(out_file_path, 'w')
+    final = json.encode(zombie)
+    out_file.write(final)
+    print("About.json updated!")
