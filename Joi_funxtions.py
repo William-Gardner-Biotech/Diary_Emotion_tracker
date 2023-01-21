@@ -183,7 +183,11 @@ def yes_or_no():
 # Interval is hardcoded but I would like to be able to manipulate a user's about file to draw that infor from there
 def reflect(user, diary):
     # We would use user.reflect_interval but haven't created that feature yet, for everyone let's hardcode 7
-    if random.randint(1,1) == 1:
+    try:
+        interval = user.interval
+    except:
+        interval = 7
+    if random.randint(1,interval) == 1:
         print("Would you like to write more about one of your thoughts?\n")
         if yes_or_no() == 'N':
             return
@@ -218,7 +222,7 @@ def show_sentence(sentences, word_counts):
 
     print(f"Please tell me how this sentence made you feel.")
     # Reused from Diary collection portion
-    entry = (f"{longest_sentence}\n{'-'*len(longest_sentence)}\n")
+    entry = (f"\n>{longest_sentence}\n{'-'*(len(longest_sentence)+1)}\n")
     while True:
         line = input()
         if line:
