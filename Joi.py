@@ -27,9 +27,12 @@ arg = parser.parse_args()
 
 Joe = User_background.build_user()
 
+
+
 # If new user initiated then it will generate but won't add their interval
 if arg.interval:
 	User_background.change_interval(Joe, arg.interval)
+	exit()
 
 # Checks if optional date was given then uses it as date or defaults to today
 # CAUTION Nothing prevents date to be formatted correctly only checks for collision. This will break our plot if user enters incorrectly
@@ -48,6 +51,12 @@ if os.path.exists(save_location):
 	exit(f'COLLISION DETECTED!\nDiary and Baseline already exist for {day}. OVERRIDE PREVENTED')
 
 Diary = Joi_funxtions.Diary_entry(Joe)
+
+# This allows for reflection to be added
+try:
+	Diary+=Joi_funxtions.reflect(Joe, Diary)
+except:
+	pass
 
 base = Joi_funxtions.baseline()
 
