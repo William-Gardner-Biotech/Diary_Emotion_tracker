@@ -3,7 +3,7 @@ import os
 import datetime
 import jsonpickle
 
-
+# Currently not in use as Baseline replaced with a more comprehensive system
 def how_are_you():
     prompt = "How are you? [Rate your day on a scale of 1 to 10]"
     response = input(prompt)
@@ -36,6 +36,7 @@ def Diary_entry(user):
     entry = ""
     print(
         'Please tell me about your day, Write as much as you would like. Press ENTER when you want to end a paragraph. PRESS ENTER again to finish entry\n')
+    # Indefinite Loop continues and add last user input together to form on string, completed when user presses space twice
     while True:
         line = input()
         if line:
@@ -48,8 +49,8 @@ def Diary_entry(user):
 
 def Diary_continue():
     decision = input("ENTER key detected, would you like to end your entry? [Y or N]")
-    #
-    if len(decision) != 1:
+
+    if len(decision) != 1: 
         print("Input not recognized")
         return Diary_continue()
 
@@ -64,17 +65,20 @@ def Diary_continue():
         print("Input not recognized")
         return Diary_continue()
 
+# Basic library reminder for back end
 if __name__ == '__main__':
     print("Running in function library")
 
 # F A S H = {[Fear],[Anger],[Sad],[Happy]}
 
 # baseline returns a pickled json object in the above format
+# emotions is handles as an object and storable which allows this function to keep retrying traits
 def baseline(emotions=None):
 
     def Fear_fxn(emotions = None):
         Fear = input("Rate your level of Fear on a scale of 0-10: ")
         check1 = between1_10(Fear)
+        # Could reverse the function using if check1: (current else condition) or if between1_10(Fear) then same
         if check1 != True:
             print("Answer must be within scale [No spaces or letters]\n")
             return baseline()
@@ -112,7 +116,7 @@ def baseline(emotions=None):
             emotions.Happy = Happy
             return mixer(emotions)
 
-# It is returning out but continues instead of returning
+# mixer checks object traits and then redirects back to the baseline emotion functions
 
     def mixer(emotions=None):
         if emotions is None:
@@ -127,10 +131,13 @@ def baseline(emotions=None):
             print("Baseline Complete")
             return emotions
 
+    # Pass this line to take the variable out of the first layer of nested function
     raw_baseline = mixer()
+    # Puts the object in storable JSON format
     baseline_obj = jsonpickle.encode(raw_baseline)
     return baseline_obj
 
+# simple string checker used to make sure the user input is correct during baseline
 def between1_10(response):
     if response.isdigit() != True:
         return False
@@ -146,8 +153,10 @@ class basic_emotion:
 ### Export Section ###
 
 def export_diary(user, entry, today = ''):
+    # today is only given to us if the user uses the sys.argvar(today) to backdate or customize date
     if today:
         day = today
+    # Defaults to current day
     else:
         day = datetime.date.today()
         day = day.strftime("%d%b%Y")
@@ -180,9 +189,9 @@ def yes_or_no():
         else:
             print("Invalid input, please enter 'Y' or 'N'.")
 
-# Interval is hardcoded but I would like to be able to manipulate a user's about file to draw that infor from there
+# Interval is hardcoded but I would like to be able to manipulate a user's about file to draw that info from there
 def reflect(user, diary):
-    # We would use user.reflect_interval but haven't created that feature yet, for everyone let's hardcode 7
+    # Every new user starts with 7 as their ferlection interval and this can be changed using --interval option
     try:
         interval = user.interval
     except:
@@ -232,7 +241,3 @@ def show_sentence(sentences, word_counts):
                 continue
             else:
                 return entry
-
-        # print(line, words)
-
-# test = reflect("", x)
