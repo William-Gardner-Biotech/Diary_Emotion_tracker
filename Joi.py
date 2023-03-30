@@ -27,8 +27,6 @@ arg = parser.parse_args()
 
 Joe = User_background.build_user()
 
-
-
 # If new user initiated then it will generate but won't add their interval
 if arg.interval:
 	User_background.change_interval(Joe, arg.interval)
@@ -50,13 +48,18 @@ else:
 if os.path.exists(save_location):
 	exit(f'COLLISION DETECTED!\nDiary and Baseline already exist for {day}. OVERRIDE PREVENTED')
 
+# Executes Diary entry prompting
+
 Diary = Joi_funxtions.Diary_entry(Joe)
 
 # This allows for reflection to be added
+# We are concatenating the Diary with our reflection to export using one step 
 try:
 	Diary+=Joi_funxtions.reflect(Joe, Diary)
 except:
 	pass
+
+# Executes Baseline
 
 base = Joi_funxtions.baseline()
 
