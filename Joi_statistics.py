@@ -24,6 +24,7 @@ def visualize_graph(user):
     for date in open_order:
         filename = f"{baselines_path}BL_{date}.json"
         emotions = resurrect(filename)
+        # Adds them one by one to resort it chronologically
         Fear_y_axis.append(float(emotions.Fear))
         Anger_y_axis.append(float(emotions.Anger))
         Sad_y_axis.append(float(emotions.Sad))
@@ -31,6 +32,8 @@ def visualize_graph(user):
 
     if len(open_order) < 5:
         return print("Plot could not be generated. \nI need more entries to generate a meaningful plot.")
+
+# I would like missing days to be empty for a better baseline
 
     plt.plot(open_order, Fear_y_axis, label="FEAR")
     plt.plot(open_order, Anger_y_axis, label="ANGER")
