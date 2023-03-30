@@ -42,7 +42,6 @@ def Age():
 # Serves as one of two main functions
 # Decker is the old Blade Runner
 
-# Currently the REGEX is not working
 # json.dumps() will create python object from json
 
 def existing_user(user_file_path):
@@ -51,7 +50,7 @@ def existing_user(user_file_path):
         rebuild = existing.read()
     # Decode takes the json format and transforms it back into an object with all the existing attributes
     Decker = json.decode(rebuild)
-    print("Welcome back", Decker.name, "\n")
+    print("\nWelcome back", Decker.name, "\n")
     return Decker
 
 # We must ensure at least one backup when changing user files
@@ -68,6 +67,7 @@ def export_user(user):
     out_file.write(final)
     pass
 
+# Function to prevent overwriting an existing user object
 def checkin(user_directory):
     if os.path.exists(user_directory):
         return False
@@ -91,8 +91,7 @@ def change_interval(user, interval):
         zombie = json.decode(raw)
 
     zombie.interval = interval
-    print(zombie)
-
+    #print(zombie)
     out_file_path = f"{user.directory}/About.json"
     out_file = open(out_file_path, 'w')
     final = json.encode(zombie)
