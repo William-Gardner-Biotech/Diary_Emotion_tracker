@@ -81,7 +81,7 @@ def baseline(emotions=None):
         # Could reverse the function using if check1: (current else condition) or if between1_10(Fear) then same
         if check1 != True:
             print("Answer must be within scale [No spaces or letters]\n")
-            return baseline()
+            return mixer(emotions)
         else:
             emotions = basic_emotion(Fear)
             return mixer(emotions)
