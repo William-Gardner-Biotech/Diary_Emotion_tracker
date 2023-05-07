@@ -20,10 +20,19 @@ def visualize_graph(user):
 
     # open_order is the same as x_axis_dates
     open_order.sort(key=lambda date: datetime.datetime.strptime(date, '%d%b%Y'))
+    today = datetime.date.today()
+    # Tries to handle the user's chosen interval
+    try:
+        x_days_ago = today - datetime.timedelta(days=user.time_span)
+    except:
+    # Hard coded variable
+        x_days_ago = today - datetime.timedelta(days=30)
+    open_order = [date for date in open_order if datetime.datetime.strptime(date, '%d%b%Y').date() >= x_days_ago]
 
     for date in open_order:
         filename = f"{baselines_path}BL_{date}.json"
         emotions = resurrect(filename)
+        print(emotions)
         # Adds them one by one to resort it chronologically
         Fear_y_axis.append(float(emotions.Fear))
         Anger_y_axis.append(float(emotions.Anger))
@@ -31,7 +40,7 @@ def visualize_graph(user):
         Happy_y_axis.append(float(emotions.Happy))
 
     if len(open_order) < 5:
-        return print("Plot could not be generated. \nI need more entries to generate a meaningful plot.")
+        return print("Plot could not be generated. \nI need more than four entries to generate a meaningful plot.")
 
 # I would like missing days to be empty for a better baseline
 
