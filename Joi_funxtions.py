@@ -209,15 +209,24 @@ def reflection_construct(diary):
     for line in sentences:
         # Counts spaces in a sentence then adds one for the last word to count words in sentence
         words = line.count(' ') + 1
-        if words == 1:
+        if words == 0:
             continue
         word_counts.append(words)
     return show_sentence(sentences, word_counts)
 
 def show_sentence(sentences, word_counts):
+    # Checks that word_country isn't empty to prevent max() function empty list error
+    if not word_counts:
+        print("ERROR: No more sentences to reflect on.\n")
+        return
     # This complexish codeline just grabs the longest sentence, then finds its index and returns that sentence from other list
     long_index = word_counts.index(max(word_counts))
     longest_sentence = sentences[long_index]
+    # This will check for empty entries or no more words to pick
+    if not longest_sentence:
+        print("ERROR: No more sentences to reflect on.\n")
+        return
+    # 2 checks are required as there can be a list that contains an empty string and must be chacked for twice
     # Remove front space
     if longest_sentence[0] == " ":
         longest_sentence = f"{longest_sentence[1:]}."

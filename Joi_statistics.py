@@ -32,7 +32,6 @@ def visualize_graph(user):
     for date in open_order:
         filename = f"{baselines_path}BL_{date}.json"
         emotions = resurrect(filename)
-        print(emotions)
         # Adds them one by one to resort it chronologically
         Fear_y_axis.append(float(emotions.Fear))
         Anger_y_axis.append(float(emotions.Anger))
