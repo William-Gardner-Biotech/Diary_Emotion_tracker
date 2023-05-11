@@ -10,18 +10,49 @@ import datetime
 
 # Joi is designed to collect user diaries to help monitor a user's emotions.
 
-parser = argparse.ArgumentParser(description='BladeRunner inspired Diary program. The longer you use this program the more accurate it will become.')
+parser = argparse.ArgumentParser(
+	description='BladeRunner inspired Diary program. The longer you use this program the more accurate it will become.',
+	formatter_class=argparse.RawTextHelpFormatter)
 
-parser.add_argument('--date', required=False, type=str, default=None,
-	metavar='<str>', help='Allows user to log missed days or import older diaries. [Must be in DDMonYYYY: ex 10Jun2021]')
+parser.add_argument('-d', '--date', required=False, type=str, default=None,
+	metavar='<str>',
+    help='Allows user to log missed days or import older diaries.\
+		\nNOTE: Must be in DDMonYYYY format\
+		\nEX: python Joi.py -d 10Jun2021 |OR| python Joi.py --date 10Jun2021')
 
-parser.add_argument('--reflect', required=False, type=str, default=None,
-	metavar='<str>', help='Allows user to add an emotional reflection after their baseline to explain what contributed to scores')
+parser.add_argument('-r', '--reflect', required=False, action='store_true',
+	help='Allows user to add an emotional reflection after their baseline to explain what contributed to scores\
+		\nNOTE: to use just include "-r" or "--reflect" in your command\
+		\nEX: python Joi.py -r |OR| python Joi.py --reflect')
 
-parser.add_argument('--interval', required=False, type=int, default=False,
-	metavar='<int>', help='Enter desired number of days for reflection')
+parser.add_argument('-i', '--interval' ,required=False, type=int, default=False, 
+	metavar='<int>', 
+    help='Enter desired number of days for reflection\
+		\nNOTE: This will overwrite the previously stored reflection interval value, DEFAULT = 7\
+		\nEX: python Joi.py -i 15 |OR| python Joi.py --interval 15')
+
+parser.add_argument('-t', '--time_span', required=False, type=int, default=False,
+	metavar='<int>', 
+    help='Add a custom time span for visualizing your emotion graph.\
+		\nNOTE: Primary purpose of this is to allow for more specified viewing of your recent diaries\
+		\nEX: python Joi.py -t 7 |OR| python Joi.py --time_span 7')
+
+parser.add_argument('-g', '--graph', required=False, type=int, default=False,
+	metavar='<int>', 
+    help='Used to view the emotion graph for a specific user, Provide the time span desired for the graph (time span must exceed 4) and user must have enough Diaries to view \
+		\nNOTE: This command will only run the graph and will exit the program before recording Diary & Baseline\
+		\nEX: python Joi.py -g 20 |OR| python Joi.py --graph 20')
 
 arg = parser.parse_args()
+
+# arg.graph must go before to avoid double-prompting
+
+if arg.graph:
+	temp_Joe = User_background.build_user()
+	# cheap workaround that makes temp fake user and changes their time_span
+	temp_Joe.time_span = arg.graph
+	Joi_statistics.visualize_graph(temp_Joe)
+	exit()
 
 ### Load in the background of the user by checking in or creating new profile
 
@@ -30,6 +61,10 @@ Joe = User_background.build_user()
 # If new user initiated then it will generate but won't add their interval
 if arg.interval:
 	User_background.change_interval(Joe, arg.interval)
+	exit()
+
+if arg.time_span:
+	User_background.change_time_span(Joe, arg.time_span)
 	exit()
 
 # Checks if optional date was given then uses it as date or defaults to today
@@ -54,10 +89,15 @@ Diary = Joi_funxtions.Diary_entry(Joe)
 
 # This allows for reflection to be added
 # We are concatenating the Diary with our reflection to export using one step 
-try:
-	Diary+=Joi_funxtions.reflect(Joe, Diary)
-except:
-	pass
+# Nice work around to temporarily change user interval to force a reflection
+if arg.reflect:
+	Joe.interval = 1
+	Joi_funxtions.reflect(Joe, Diary)
+else:
+	try:
+		Diary+=Joi_funxtions.reflect(Joe, Diary)
+	except:
+		pass
 
 # Executes Baseline
 

@@ -13,5 +13,8 @@ Features Include:
 - Reflection Intervals
 - Prompting to gain more insight
 - Emotion Graphs
+- Customizable graphing time span (Release 11May23)
+- Ability to look at user graphs anytime (Released 11May23)
+- Reflect on command (Released 11May23)
 - And many more to come!
 

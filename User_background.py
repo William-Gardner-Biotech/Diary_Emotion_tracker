@@ -97,3 +97,17 @@ def change_interval(user, interval):
     final = json.encode(zombie)
     out_file.write(final)
     print("About.json updated!")
+
+def change_time_span(user, time_span):
+    # Stolen from resurrect function
+    with open(user.directory+"/About.json", 'r') as raw:
+        raw = raw.read()
+        zombie = json.decode(raw)
+
+    zombie.time_span = time_span
+    #print(zombie)
+    out_file_path = f"{user.directory}/About.json"
+    out_file = open(out_file_path, 'w')
+    final = json.encode(zombie)
+    out_file.write(final)
+    print("About.json updated!")
