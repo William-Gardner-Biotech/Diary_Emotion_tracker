@@ -256,7 +256,7 @@ def show_sentence(sentences, word_counts):
 def validate_date(date_string):
     try:
         # Attempt to create a datetime object from the input string
-        datetime.datetime.strptime(date_string, "%Y-%m-%d")
+        datetime.datetime.strptime(date_string, '%d%b%Y')
         return True
     except ValueError:
         # If an exception is raised, the input string is not a valid date
