@@ -7,7 +7,8 @@ if __name__ == "__main__":
 def build_user():
     Joe = User(who_r_u())
     wd = os.getcwd()
-    user_file = wd + "/user_profiles/" + Joe.name
+    user_file = os.path.join(wd, 'user_profiles', Joe.name)
+    #user_file = wd + "/user_profiles/" + Joe.name
     Joe.directory = user_file
 
     checkpoint_1 = checkin(Joe.directory)
@@ -45,7 +46,8 @@ def Age():
 # json.dumps() will create python object from json
 
 def existing_user(user_file_path):
-    user_file_path = f"{user_file_path}/About.json"
+    #user_file_path = f"{user_file_path}/About.json"
+    user_file_path = os.path.join(user_file_path,"About.json")
     with open(user_file_path, 'r') as existing:
         rebuild = existing.read()
     # Decode takes the json format and transforms it back into an object with all the existing attributes
@@ -57,11 +59,14 @@ def existing_user(user_file_path):
 def export_user(user):
     #Populate step
     os.mkdir(user.directory)
-    diary_path = f"{user.directory}/Diaries"
+    #diary_path = f"{user.directory}/Diaries"
+    diary_path = os.path.join(user.directory, "Diaries")
     os.mkdir(diary_path)
-    base_line_path = f"{user.directory}/Baselines"
+    #base_line_path = f"{user.directory}/Baselines"
+    base_line_path = os.path.join(user.directory, "Baselines")
     os.mkdir(base_line_path)
-    out_file_path = f"{user.directory}/About.json"
+    #out_file_path = f"{user.directory}/About.json"
+    out_file_path = os.path.join(user.directory, "About.json")
     out_file = open(out_file_path, 'w')
     final = json.encode(user)
     out_file.write(final)
@@ -86,28 +91,29 @@ class User:
 # Writted here because of jsonpickle and user handling
 def change_interval(user, interval):
     # Stolen from resurrect function
-    with open(user.directory+"/About.json", 'r') as raw:
+    JSON_out = os.path.join(user.directory, 'About.json')
+    with open(JSON_out, 'r') as raw:
         raw = raw.read()
         zombie = json.decode(raw)
 
     zombie.interval = interval
     #print(zombie)
-    out_file_path = f"{user.directory}/About.json"
-    out_file = open(out_file_path, 'w')
+    out_file = open(JSON_out, 'w')
     final = json.encode(zombie)
     out_file.write(final)
     print("About.json updated!")
 
 def change_time_span(user, time_span):
     # Stolen from resurrect function
-    with open(user.directory+"/About.json", 'r') as raw:
+    JSON_out = os.path.join(user.directory, 'About.json')
+    #with open(user.directory+"/About.json", 'r') as raw:
+    with open(JSON_out, 'r') as raw:
         raw = raw.read()
         zombie = json.decode(raw)
 
     zombie.time_span = time_span
     #print(zombie)
-    out_file_path = f"{user.directory}/About.json"
-    out_file = open(out_file_path, 'w')
+    out_file = open(JSON_out, 'w')
     final = json.encode(zombie)
     out_file.write(final)
     print("About.json updated!")

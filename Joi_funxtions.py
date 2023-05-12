@@ -160,7 +160,8 @@ def export_diary(user, entry, today = ''):
     else:
         day = datetime.date.today()
         day = day.strftime("%d%b%Y")
-    export_path = user.directory+"/Diaries/"+day+".txt"
+    export_path = os.path.join(user.directory, "Diaries", f"{day}.txt")
+    # export_path = user.directory+"/Diaries/"+day+".txt"
     # make this a forkable position to add an overwrite option (make overwrite a function)
     if os.path.exists(export_path):
         return ("Diary Entry already submitted for this date")
@@ -175,7 +176,8 @@ def export_baseline(user, base, today = ''):
     else:
         day = datetime.date.today()
         day = day.strftime("%d%b%Y")
-    export_path = user.directory+"/Baselines/BL_"+day+".json"
+    export_path = os.path.join(user.directory, 'Baselines', f'BL_{day}.json')
+    #export_path = user.directory+"/Baselines/BL_"+day+".json"
     if os.path.exists(export_path):
         return ("Baseline already exists for this date")
     with open(export_path, 'w') as submit:

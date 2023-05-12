@@ -16,7 +16,7 @@ parser = argparse.ArgumentParser(
 
 parser.add_argument('-d', '--date', required=False, type=str, default=None,
 	metavar='<str>',
-    help='Allows user to log missed days or import older diaries.\
+	help='Allows user to log missed days or import older diaries.\
 		\nNOTE: Must be in DDMonYYYY format\
 		\nEX: python Joi.py -d 10Jun2021 |OR| python Joi.py --date 10Jun2021')
 
@@ -27,19 +27,19 @@ parser.add_argument('-r', '--reflect', required=False, action='store_true',
 
 parser.add_argument('-i', '--interval' ,required=False, type=int, default=False, 
 	metavar='<int>', 
-    help='Enter desired number of days for reflection\
+	help='Enter desired number of days for reflection\
 		\nNOTE: This will overwrite the previously stored reflection interval value, DEFAULT = 7\
 		\nEX: python Joi.py -i 15 |OR| python Joi.py --interval 15')
 
 parser.add_argument('-t', '--time_span', required=False, type=int, default=False,
 	metavar='<int>', 
-    help='Add a custom time span for visualizing your emotion graph.\
+	help='Add a custom time span for visualizing your emotion graph.\
 		\nNOTE: Primary purpose of this is to allow for more specified viewing of your recent diaries\
 		\nEX: python Joi.py -t 7 |OR| python Joi.py --time_span 7')
 
 parser.add_argument('-g', '--graph', required=False, type=int, default=False,
 	metavar='<int>', 
-    help='Used to view the emotion graph for a specific user, Provide the time span desired for the graph (time span must exceed 4) and user must have enough Diaries to view \
+	help='Used to view the emotion graph for a specific user, Provide the time span desired for the graph (time span must exceed 4) and user must have enough Diaries to view \
 		\nNOTE: This command will only run the graph and will exit the program before recording Diary & Baseline\
 		\nEX: python Joi.py -g 20 |OR| python Joi.py --graph 20')
 
@@ -75,13 +75,16 @@ if arg.time_span:
 if arg.date:
 	if Joi_funxtions.validate_date(arg.date):
 		day = arg.date
-		save_location = f'{Joe.directory}/Diaries/{day}.txt'
+		save_location = os.path.join(Joe.directory, 'Diaries', f'{day}.txt')
+	 	#save_location = f'{Joe.directory}/Diaries/{day}.txt'
 	else:
 		exit('Invalid Date input, Must be DDMonYYYY format,\ntry Joi.py -h for more help')
 else:
 	day = datetime.date.today()
 	day = day.strftime("%d%b%Y")
-	save_location = f'{Joe.directory}/Diaries/{day}.txt'
+	save_location = os.path.join(Joe.directory, 'Diaries', f'{day}.txt')
+	#save_location = f'{Joe.directory}/Diaries/{day}.txt'
+
 
 if os.path.exists(save_location):
 	exit(f'COLLISION DETECTED!\nDiary and Baseline already exist for {day}. OVERRIDE PREVENTED')

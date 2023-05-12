@@ -11,7 +11,8 @@ def visualize_graph(user):
     Anger_y_axis = []
     Sad_y_axis = []
     Happy_y_axis = []
-    baselines_path = user.directory+"/Baselines/"
+    #baselines_path = user.directory+"/Baselines/"
+    baselines_path = os.path.join(user.directory, "Baselines")
     # This will list all files in the Baselines directory, must select file
     for root, dirs, file in os.walk(baselines_path):
         for i in file:
@@ -30,7 +31,8 @@ def visualize_graph(user):
     open_order = [date for date in open_order if datetime.datetime.strptime(date, '%d%b%Y').date() >= x_days_ago]
 
     for date in open_order:
-        filename = f"{baselines_path}BL_{date}.json"
+        #filename = f"{baselines_path}BL_{date}.json"
+        filename = os.path.join(baselines_path, f'BL_{date}.json')
         emotions = resurrect(filename)
         # Adds them one by one to resort it chronologically
         Fear_y_axis.append(float(emotions.Fear))
