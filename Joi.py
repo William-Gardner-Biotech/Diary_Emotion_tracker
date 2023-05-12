@@ -73,8 +73,11 @@ if arg.time_span:
 # Relies on only checking Diary exists as the program treats both Diaries and Baselines together.
 
 if arg.date:
-	day = arg.date
-	save_location = f'{Joe.directory}/Diaries/{day}.txt'
+	if Joi_funxtions.validate_date(arg.date):
+		day = arg.date
+		save_location = f'{Joe.directory}/Diaries/{day}.txt'
+	else:
+		exit('Invalid Date input, Must be DDMonYYYY format,\ntry Joi.py -h for more help')
 else:
 	day = datetime.date.today()
 	day = day.strftime("%d%b%Y")
