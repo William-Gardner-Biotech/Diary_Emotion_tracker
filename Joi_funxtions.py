@@ -2,6 +2,8 @@ import random
 import os
 import datetime
 import jsonpickle
+import shutil
+import openai
 
 # Currently not in use as Baseline replaced with a more comprehensive system
 def how_are_you():
@@ -160,7 +162,8 @@ def export_diary(user, entry, today = ''):
     else:
         day = datetime.date.today()
         day = day.strftime("%d%b%Y")
-    export_path = user.directory+"/Diaries/"+day+".txt"
+    export_path = os.path.join(user.directory, "Diaries", f"{day}.txt")
+    # export_path = user.directory+"/Diaries/"+day+".txt"
     # make this a forkable position to add an overwrite option (make overwrite a function)
     if os.path.exists(export_path):
         return ("Diary Entry already submitted for this date")
@@ -175,7 +178,8 @@ def export_baseline(user, base, today = ''):
     else:
         day = datetime.date.today()
         day = day.strftime("%d%b%Y")
-    export_path = user.directory+"/Baselines/BL_"+day+".json"
+    export_path = os.path.join(user.directory, 'Baselines', f'BL_{day}.json')
+    #export_path = user.directory+"/Baselines/BL_"+day+".json"
     if os.path.exists(export_path):
         return ("Baseline already exists for this date")
     with open(export_path, 'w') as submit:
@@ -240,7 +244,7 @@ def show_sentence(sentences, word_counts):
 
     print(f"Please tell me how this sentence made you feel.")
     # Reused from Diary collection portion
-    entry = (f"\n>{longest_sentence}\n{'-'*(len(longest_sentence)+1)}\n")
+    entry = (f"\n>{longest_sentence}\n")
     while True:
         line = input()
         if line:
@@ -254,8 +258,50 @@ def show_sentence(sentences, word_counts):
 def validate_date(date_string):
     try:
         # Attempt to create a datetime object from the input string
-        datetime.datetime.strptime(date_string, "%Y-%m-%d")
+        datetime.datetime.strptime(date_string, '%d%b%Y')
         return True
     except ValueError:
         # If an exception is raised, the input string is not a valid date
         return False
+    
+def create_backup(user, save_location):
+    # Overwrite option
+    if os.path.exists(os.path.join(os.getcwd(), save_location)):
+        print('Backup already exists, would you like to overwrite?')
+        if yes_or_no() == 'N':
+            print('Backup failed because of overwrite conflict')
+        else:
+            shutil.rmtree(os.path.join(os.getcwd(), save_location))
+            shutil.copytree(user.directory, os.path.join(os.getcwd(), save_location))
+    else:
+        shutil.copytree(user.directory, os.path.join(os.getcwd(), save_location))
+
+# imput pricing: $0.0015 / 1K tokens
+def ai_reflect(diary):
+
+    openai.api_key = open('CHATGPT_key.txt', 'r').read().strip('\n')
+
+    def complete(ur_diary):
+        completion = openai.ChatCompletion.create(
+            model="gpt-3.5-turbo",
+            max_tokens = 2000,
+            messages=[{'role':'system', 'content':'Ask a simple yet meaningful question about the diary entry to make the writer reflect deeper.'},
+                {'role':'user', 'content': ur_diary}]
+        )
+        # completion is an object which we want to extract the question from, display it to the user then save like reflect
+        return completion
+
+    obj_question = complete(diary)
+    question = obj_question.choices[0]['message']['content']
+    print(f'\n>{question}\n')
+    entry = (f"\n>{question}\n")
+    while True:
+        line = input()
+        if line:
+            entry += f"{line}"
+        else:
+            if Diary_continue() == False:
+                continue
+            else:
+                return entry
+    
